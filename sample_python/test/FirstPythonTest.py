@@ -42,7 +42,7 @@ class FirstPythonTest(unittest.TestCase):
         self.driver.execute_script('arguments[0].setAttribute(arguments[1], arguments[2])', element, 'style', "border: 2px solid "+str(color)+"; border-style: dashed;")
         if int(duration) > 0:
             sleep(duration)
-            self.driver.execute_script('arguments[0].setAttribute(arguments[1], arguments[2])', element, 'style', str(original_style))
+        self.driver.execute_script('arguments[0].setAttribute(arguments[1], arguments[2])', element, 'style', str(original_style))
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

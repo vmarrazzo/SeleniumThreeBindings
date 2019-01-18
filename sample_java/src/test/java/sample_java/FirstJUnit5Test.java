@@ -71,10 +71,10 @@ public class FirstJUnit5Test {
 		js.executeScript("arguments[0].setAttribute(arguments[1], arguments[2])", element, "style",
 				"border: 2px solid "+color+"; border-style: dashed;");
 
-		if (duration > 0) {
+		if (duration > 0)
 			Thread.sleep(duration * 1000);
-			js.executeScript("arguments[0].setAttribute(arguments[1], arguments[2])", element, "style", original_style);
-		}
+		
+		js.executeScript("arguments[0].setAttribute(arguments[1], arguments[2])", element, "style", original_style);
 	}
 
 }
