@@ -1,5 +1,7 @@
 package sample_java;
 
+import java.util.function.Supplier;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterEach;
@@ -55,6 +57,31 @@ public class FirstJUnit5Test {
 		highlightElement(avatar, 2, "blue");
 		
 		assertTrue(caption.isDisplayed());
+	}
+
+	@Test
+	public void testScanCodeRenew() throws InterruptedException {
+		
+		driver.get("https://web.whatsapp.com/");
+		
+		By xpath = By.xpath("//div[contains(@class,'_1pw2F')]");
+		WebElement scanCode = new WebDriverWait(driver, 10)
+				.until(ExpectedConditions.presenceOfElementLocated(xpath));
+		
+		Supplier<String> getScanCode = () -> scanCode.getAttribute("data-ref");
+		
+		String oldCode = getScanCode.get();
+				
+		for(int index = 0 ; index < 3 ; index++) {
+			
+			Thread.sleep(30_000);
+			
+			String newCode = getScanCode.get();
+			
+			assertNotEquals("Scan code must change after 30 seconds!", oldCode, newCode);
+			
+			oldCode = newCode;
+		}
 	}
 
 	/**
