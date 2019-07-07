@@ -1,10 +1,11 @@
 *** Setting ***
    
-Library    Selenium2Library
+Library    SeleniumLibrary
 
 *** Variables ***
 ${BROWSER}	Chrome
 ${URL2TEST}	http://the-internet.herokuapp.com/hovers
+# to execute this test launch locally installed chromedriver.exe before test execution
 ${GRID_URL}	http://localhost:9515
 
 *** Test Cases ***
