@@ -1,6 +1,6 @@
 package sample_java;
 
-import java.util.function.Supplier;
+import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,10 +11,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class FirstJUnit5Test {
 
@@ -26,9 +28,10 @@ public class FirstJUnit5Test {
 
 		System.out.println("#### Before");
 
-		System.setProperty("webdriver.chrome.driver", "<FILL_WITH_CORRECT_PATH>\\chromedriver.exe");
-
-		driver = new ChromeDriver();
+		// to execute this test launch locally installed chromedriver.exe before test execution
+		driver = new RemoteWebDriver(
+				new URL("http://localhost:9515"), 
+				new ChromeOptions());
 		js = (JavascriptExecutor) driver;
 	}
 
@@ -44,64 +47,50 @@ public class FirstJUnit5Test {
 	void test() throws InterruptedException {
 		driver.get("http://the-internet.herokuapp.com/hovers");
 
-		WebElement avatar = driver.findElement(By.className("figure"));
-		highlightElement(avatar, 5, "red");
+		highlightElement("figure", 5, "red");
 		
+		By avatarLocator = By.xpath("//div[@class='figure'][1]");
+		By captionLocator = By.xpath("//div[@class='figcaption'][1]");
+
+		WebElement avatar = driver.findElement(avatarLocator);
+
 		Actions builder = new Actions(driver);
 		builder.moveToElement(avatar).build().perform();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("figcaption")));
+		WebElement caption = wait.until(visibilityOfElementLocated(captionLocator));
 
-		WebElement caption = driver.findElement(By.className("figcaption")); 
-		highlightElement(avatar, 2, "blue");
+		highlightElement("figcaption", 2, "blue");
 		
 		assertTrue(caption.isDisplayed());
 	}
 
-	@Test
-	public void testScanCodeRenew() throws InterruptedException {
-		
-		driver.get("https://web.whatsapp.com/");
-		
-		By xpath = By.xpath("//div[contains(@class,'_1pw2F')]");
-		WebElement scanCode = new WebDriverWait(driver, 10)
-				.until(ExpectedConditions.presenceOfElementLocated(xpath));
-		
-		Supplier<String> getScanCode = () -> scanCode.getAttribute("data-ref");
-		
-		String oldCode = getScanCode.get();
-				
-		for(int index = 0 ; index < 3 ; index++) {
-			
-			Thread.sleep(30_000);
-			
-			String newCode = getScanCode.get();
-			
-			assertNotEquals("Scan code must change after 30 seconds!", oldCode, newCode);
-			
-			oldCode = newCode;
-		}
-	}
-
 	/**
-	 * This routine highlight WebElement for requested time.
+	 * Select a WebElement from its class and highlight for requested time.
 	 * 
-	 * @param element
+	 * @param className
 	 * @param duration
 	 * @param color
 	 * @throws InterruptedException
 	 */
-	private void highlightElement(WebElement element, int duration, String color) throws InterruptedException {
+	private void highlightElement(String className, int duration, String color) throws InterruptedException {
+
+		WebElement element = driver.findElement(By.className(className)); 
 		String original_style = element.getAttribute("style");
 
-		js.executeScript("arguments[0].setAttribute(arguments[1], arguments[2])", element, "style",
-				"border: 2px solid "+color+"; border-style: dashed;");
+		js.executeScript(
+			"arguments[0].setAttribute(arguments[1], arguments[2])", 
+			element, 
+			"style",
+			"border: 2px solid "+color+"; border-style: dashed;");
 
 		if (duration > 0)
 			Thread.sleep(duration * 1000);
 		
-		js.executeScript("arguments[0].setAttribute(arguments[1], arguments[2])", element, "style", original_style);
+		js.executeScript(
+			"arguments[0].setAttribute(arguments[1], arguments[2])", 
+			element, 
+			"style", 
+			original_style);
 	}
-
 }
