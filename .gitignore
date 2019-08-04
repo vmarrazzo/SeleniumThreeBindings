@@ -3,3 +3,7 @@ target/
 results/
 
 *.pyc
+
+.classpath
+.project
+.settings
