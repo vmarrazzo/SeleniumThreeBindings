@@ -9,7 +9,7 @@ ${URL2TEST}	http://the-internet.herokuapp.com/hovers
 ${GRID_URL}	http://localhost:9515
 
 *** Test Cases ***
-Sample Robot Test
+Test Selenium Robot
 	[Setup]	Open Browser To Landing Page
 	Highlight Element	figure	5	red
 	Mouse Over		//div[@class='figure'][1]

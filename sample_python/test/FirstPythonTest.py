@@ -1,9 +1,9 @@
 import unittest
-from selenium import webdriver
 from time import sleep
+from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.expected_conditions import visibility_of_element_located
 from selenium.webdriver.common.by import By
 
 
@@ -25,18 +25,19 @@ class FirstPythonTest(unittest.TestCase):
         print("#### After")
         self.driver.quit()
 
-    def testName(self):
+    def testSeleniumPython(self):
         self.driver.get("http://the-internet.herokuapp.com/hovers")
         
         self.highlightElement('figure', 5, 'red')
+        
         avatar = self.driver.find_element_by_xpath("//div[@class='figure'][1]")
+        caption = self.driver.find_element_by_xpath("//div[@class='figcaption'][1]")
 
         ActionChains(self.driver).move_to_element(avatar).perform()
         
         wait = WebDriverWait(self.driver, timeout=5)
-        wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@class='figcaption'][1]")))
+        wait.until(visibility_of_element_located((By.XPATH, "//div[@class='figcaption'][1]")))
 
-        caption = self.driver.find_element_by_xpath("//div[@class='figcaption'][1]")
         self.highlightElement('figcaption', 2, 'blue')
         
         self.assertTrue(caption.is_displayed(), 'Caption element is NOT showed!')
@@ -59,5 +60,4 @@ class FirstPythonTest(unittest.TestCase):
             str(original_style))
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

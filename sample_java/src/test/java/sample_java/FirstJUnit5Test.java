@@ -2,11 +2,11 @@ package sample_java;
 
 import java.net.URL;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -15,8 +15,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class FirstJUnit5Test {
 
@@ -44,7 +43,7 @@ public class FirstJUnit5Test {
 	}
 
 	@Test
-	void test() throws InterruptedException {
+	void testSeleniumJava() throws InterruptedException {
 		driver.get("http://the-internet.herokuapp.com/hovers");
 
 		highlightElement("figure", 5, "red");
