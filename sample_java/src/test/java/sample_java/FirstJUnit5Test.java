@@ -26,7 +26,6 @@ public class FirstJUnit5Test {
 	public void setUp() throws Exception {
 
 		System.out.println("#### Before");
-
 		// to execute this test launch locally installed chromedriver.exe before test execution
 		driver = new RemoteWebDriver(
 				new URL("http://localhost:9515"), 
@@ -38,7 +37,6 @@ public class FirstJUnit5Test {
 	public void tearDown() throws Exception {
 
 		System.out.println("#### After");
-
 		driver.quit();
 	}
 
@@ -73,19 +71,15 @@ public class FirstJUnit5Test {
 	 * @throws InterruptedException
 	 */
 	private void highlightElement(String className, int duration, String color) throws InterruptedException {
-
 		WebElement element = driver.findElement(By.className(className)); 
 		String original_style = element.getAttribute("style");
-
 		js.executeScript(
 			"arguments[0].setAttribute(arguments[1], arguments[2])", 
 			element, 
 			"style",
 			"border: 2px solid "+color+"; border-style: dashed;");
-
 		if (duration > 0)
 			Thread.sleep(duration * 1000);
-		
 		js.executeScript(
 			"arguments[0].setAttribute(arguments[1], arguments[2])", 
 			element, 
